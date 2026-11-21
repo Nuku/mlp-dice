@@ -2,12 +2,14 @@
   "id": "mlp-dice",
   "title": "MLP Dice",
   "description": "My Little Pony Generation 4 dice with numbered cutie-mark crests, themed skins, animated Living Insides, and character-specific critical effects.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "url": "https://github.com/Nuku/mlp-dice",
   "manifest": "https://github.com/Nuku/mlp-dice/releases/latest/download/module.json",
-  "download": "https://github.com/Nuku/mlp-dice/releases/download/v1.1.0/mlp-dice-v1.1.0.zip",
+  "download": "https://github.com/Nuku/mlp-dice/releases/download/v1.1.1/mlp-dice-v1.1.1.zip",
   "compatibility": {
-    "minimum": "14"
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
   },
   "esmodules": ["scripts/mlp-dice.js"],
   "styles": ["styles/crit-effects.css"],
