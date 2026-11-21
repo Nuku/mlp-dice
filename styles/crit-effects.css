@@ -1,0 +1,72 @@
+.mlp-dice-crit {
+    position: fixed;
+    z-index: 10010;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.mlp-dice-crit__particle,
+.mlp-dice-crit__ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+.mlp-dice-crit__particle {
+    font-family: system-ui, sans-serif;
+    line-height: 1;
+    text-shadow: 0 0 9px currentColor, 0 1px 3px #17121e;
+}
+
+.mlp-dice-crit__ring {
+    box-sizing: border-box;
+    width: 70px;
+    height: 70px;
+    border: 2px solid;
+    border-radius: 50%;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--mlp-accent) 60%, transparent);
+}
+
+.mlp-dice-crit__badge {
+    position: absolute;
+    left: 0;
+    bottom: 34px;
+    display: grid;
+    grid-template-columns: 32px auto;
+    align-items: center;
+    gap: 1px 8px;
+    width: max-content;
+    max-width: min(240px, 85vw);
+    padding: 7px 12px;
+    border: 1px solid var(--mlp-accent);
+    border-radius: 9px;
+    color: #fff7ef;
+    background: linear-gradient(112deg, var(--mlp-base), #201929);
+    box-shadow: 0 3px 12px #000a;
+    font: 14px/1.18 system-ui, sans-serif;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+.mlp-dice-crit--low .mlp-dice-crit__badge {
+    border-style: dashed;
+}
+
+.mlp-dice-crit__badge img {
+    grid-row: span 2;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    object-fit: contain;
+}
+
+.mlp-dice-crit__badge span {
+    color: var(--mlp-accent);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .09em;
+}

@@ -1,4 +1,5 @@
 import { CHARACTERS } from "./catalog.js";
+import { registerCritEffects } from "./crit-effects.js";
 import { addLivingInterior } from "./living-inside.js";
 
 const MODULE_ID = "mlp-dice";
@@ -31,11 +32,23 @@ function registerColorset(dice3d, id, description, [outline, background], materi
     });
 }
 
+Hooks.once("init", () => {
+    game.settings.register(MODULE_ID, "criticalEffects", {
+        name: "MLP Dice critical effects",
+        hint: "Play a character-themed effect on natural 20s and natural 1s rolled with MLP Dice.",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+    });
+});
+
 Hooks.once("diceSoNiceReady", (dice3d) => {
     const DiceSystem = dice3d.DiceSystem;
     const hasLivingInside = DiceSystem && DiceSystem === globalThis.DicerAPI?.DiceSystem
         && typeof DiceSystem.prototype.registerBeforeShaderCompileCallback === "function";
     const reduceMotion = hasLivingInside && globalThis.matchMedia?.("(prefers-reduced-motion: reduce)");
+    const attachCritEffects = registerCritEffects(dice3d, ASSETS);
 
     for (const character of CHARACTERS) {
         const { slug, name, palette } = character;
@@ -44,7 +57,11 @@ Hooks.once("diceSoNiceReady", (dice3d) => {
         const skin = `${id}-skinned`;
         const skinName = `${name} (Skinned)`;
         registerColorset(dice3d, skin, skinName, palette, "plastic");
-        dice3d.addSystem({ id: skin, name: skinName, group: GROUP }, "default");
+        const skinSystem = attachCritEffects
+            ? new DiceSystem(skin, skinName, "default", GROUP)
+            : { id: skin, name: skinName, group: GROUP };
+        attachCritEffects?.(skinSystem, character);
+        dice3d.addSystem(skinSystem, "default");
         for (const type of TYPES) {
             dice3d.addDicePreset({
                 type,
@@ -60,6 +77,7 @@ Hooks.once("diceSoNiceReady", (dice3d) => {
         const description = `${name} (Living Inside)`;
         const system = new DiceSystem(living, description, "default", GROUP);
         addLivingInterior(system, character, `${ASSETS}/marks/${slug}.png`, reduceMotion);
+        attachCritEffects?.(system, character);
         registerColorset(dice3d, living, description, palette, "glass");
         dice3d.addSystem(system, "default");
         for (const type of TYPES) {
